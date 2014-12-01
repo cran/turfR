@@ -3,8 +3,8 @@
 turf <- function(data, n, k, combos, ...) {
 	
 	##TURF Analysis for R
-	##version 0.8-4 (built on R 3.1.0), depends: dplyr
-	##updated 2014-05-09, Jack Horne (jack@jackhorne.net)
+	##version 0.8-7 (built on R 3.1.2), depends: dplyr (>= 0.3.0), magrittr
+	##updated 2014-12-01, Jack Horne (jack@jackhorne.net)
 	
 	#get data
 	stime <- unclass(Sys.time())
@@ -87,11 +87,10 @@ turf <- function(data, n, k, combos, ...) {
 		combo.ind <- kronecker(1:nrow(combos[[i]]), rep(1, nrow(datX)))
 		
 		dagg <- cbind(as.factor(combo.ind), dagg)
-		names(dagg)[1] <- "combo"
+		names(dagg)[1] <- "combo.ind"
 		
-		turf.agg[[i]] <- dagg %.%
-			group_by("combo") %.%
-			summarise(rchX = sum(rchX), frqX = sum(frqX))	
+		turf.grp <- group_by(dagg, combo = combo.ind)
+		turf.agg[[i]] <- summarise(turf.grp, rchX = sum(rchX), frqX = sum(frqX))
 		turf.agg[[i]][,2:3] <- turf.agg[[i]][,2:3] / sum(datX[,2])
 		turf.agg[[i]] <- cbind(turf.agg[[i]], combos[[i]])
 		if(sort == "a" | sort == "d") {
