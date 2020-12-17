@@ -12,7 +12,7 @@ turf <- function(data, n, k, combos, ...) {
     else { datX <- read.table(data, header = TRUE, sep = "\t") }
 
 	#error check initial arguments
-	if(min(k) <= 1) stop("min(k) must be greater than or equal to 1")
+	if(min(k) < 1) stop("min(k) must be greater than or equal to 1")
 	if(n <= max(k)) stop("max(k) must be less than the total number of items n")
 	if((ncol(datX) - 2) < n) stop("Data must have respondent id, weight and at least n additional columns") 
 	
@@ -123,7 +123,7 @@ turf.args <- function(depth=1L, keep=0, mc=FALSE, nsims=10000, psims=NULL, sort=
 
 turf.combos <- function(n, k, ...) {
 
-	if(min(k) <= 1) stop("min(k) must be greater than or equal to 1")
+	if(min(k) < 1) stop("min(k) must be greater than or equal to 1")
 	if(n <= max(k)) stop("max(k) must be less than the total number of items n")
 	
 	#collect and error check any additional arguments
